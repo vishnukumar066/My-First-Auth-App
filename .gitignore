@@ -1,0 +1,21 @@
+# Node modules
+node_modules/
+
+# Environment variables (SECRETS)
+.env
+backend/.env
+frontend/.env
+config.env
+congig.env
+
+# Logs
+logs
+*.log
+
+# Build folders
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
