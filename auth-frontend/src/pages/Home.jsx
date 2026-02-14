@@ -2,12 +2,14 @@ import { useContext } from "react";
 import { AuthContext } from "../contextAPI/auth-store";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Navigate, Link } from "react-router-dom";
+import { Navigate, Link, useNavigate } from "react-router-dom";
 import { LogOut, PlusCircle, NotebookPen } from "lucide-react";
 
 const Home = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } =
     useContext(AuthContext);
+  
+  const navigate = useNavigate();
 
   // Logout
   const logoutHandler = async () => {
@@ -18,12 +20,14 @@ const Home = () => {
           withCredentials: true,
         },
       );
+      
+    toast.success(res.data.message);
+    setIsAuthenticated(false);
+      setUser(null);
+      navigate("/auth")
     } catch (error) {
       toast.error(error.response?.data?.message || "Logout failed");
     }
-    toast.success(res.data.message);
-    setIsAuthenticated(false);
-    setUser(null);
   };
 
   // redirect if not logged in
