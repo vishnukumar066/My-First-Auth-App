@@ -15,8 +15,6 @@ function App() {
   const { setIsAuthenticated, setUser } =
     useContext(AuthContext);
   
-  console.log("Checking env: ", import.meta.env.VITE_API_URL);
-  
 
   useEffect(() => {
     const getUser = async () => {
