@@ -12,16 +12,18 @@ const Home = () => {
   // Logout
   const logoutHandler = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/logout`, {
-        withCredentials: true,
-      });
-
-      toast.success(res.data.message);
-      setUser(null);
-      setIsAuthenticated(false);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/v1/user/logout`,
+        {
+          withCredentials: true,
+        },
+      );
     } catch (error) {
       toast.error(error.response?.data?.message || "Logout failed");
     }
+    toast.success(res.data.message);
+    setIsAuthenticated(false);
+    setUser(null);
   };
 
   // redirect if not logged in

@@ -6,6 +6,7 @@ import twilio from "twilio";
 import { sendToken } from "../utils/sendToken.js";
 import crypto from "crypto";
 import { send } from "process";
+import { log } from "console";
 
 // Twilio client initialization
 //const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -121,6 +122,9 @@ async function sendVerificationCode(
   try {
     if (verificationMethod === "email") {
       const message = generateEmailTemplate(verificationCode);
+
+      console.log("Sending emil to :", email);
+
       await sendEmail(email, "Account Verification - Note App", message);
       res.status(200).json({
         success: true,
@@ -192,7 +196,7 @@ export const verifyOTP = catchAsyncError(async (req, res, next) => {
       return phoneRegex.test(phone);
     }
 
-    if (!validatePhoneNumber(phone)) {
+    if (phone && !validatePhoneNumber(phone)) {
       return next(
         new ErrorHandler(
           "Invalid phone number format. It should be in the format +91XXXXXXXXXX",
@@ -317,9 +321,12 @@ export const login = catchAsyncError(async (req, res, next) => {
 export const logout = catchAsyncError(async (req, res, next) => {
   res
     .status(200)
-    .cookie("token", null, {
+    .cookie("token", "", {
       expires: new Date(Date.now()),
       httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      expires: new Date(0),
     })
     .json({
       success: true,
